@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MDF & Pot Odds Trainer - Omaha PLO</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>MDF & Pot Odds Trainer</h1>
+      <p class="subtitle">Omaha Pot Limit</p>
+    </header>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-label">Pot Odds:</span>
+        <span id="pot-odds-stats" class="stat-value">0/0 (0%)</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">MDF:</span>
+        <span id="mdf-stats" class="stat-value">0/0 (0%)</span>
+      </div>
+      <button id="reset-stats-btn" class="btn btn-small">Reset Stats</button>
+      <button id="settings-btn" class="btn btn-small">Settings</button>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="settings-panel" class="settings-panel hidden">
+      <h3>Settings</h3>
+      <div class="setting-item">
+        <label for="min-pot">Min Pot:</label>
+        <input type="number" id="min-pot" min="2.5" max="100" step="0.5" value="4.5">
+      </div>
+      <div class="setting-item">
+        <label for="max-pot">Max Pot:</label>
+        <input type="number" id="max-pot" min="10" max="1000" step="10" value="400">
+      </div>
+      <button id="save-settings-btn" class="btn">Save Settings</button>
+    </div>
+
+    <main>
+      <!-- Question Type Selection -->
+      <div class="question-type-selector">
+        <label>
+          <input type="radio" name="question-type" value="random" checked>
+          Random
+        </label>
+        <label>
+          <input type="radio" name="question-type" value="pot-odds">
+          Pot Odds Only
+        </label>
+        <label>
+          <input type="radio" name="question-type" value="mdf">
+          MDF Only
+        </label>
+      </div>
+
+      <!-- Question Display -->
+      <div class="question-card">
+        <div class="scenario">
+          <div class="scenario-item">
+            <span class="label">Pot:</span>
+            <span id="pot-value" class="value">0</span>
+          </div>
+          <div class="scenario-item">
+            <span class="label">Bet:</span>
+            <span id="bet-value" class="value">0</span>
+            <span id="bet-percentage" class="percentage">(0%)</span>
+          </div>
+        </div>
+
+        <div class="question">
+          <label id="question-label" for="answer-input">What are your pot odds? (in %)</label>
+          <input
+            type="number"
+            id="answer-input"
+            step="0.01"
+            placeholder="Enter your answer"
+            autocomplete="off"
+          >
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <div class="actions">
+          <button id="submit-btn" class="btn btn-primary">Submit</button>
+          <button id="new-question-btn" class="btn">New Question</button>
+        </div>
+      </div>
+
+      <!-- Quick Reference -->
+      <div class="reference-card">
+        <h3>Quick Reference</h3>
+        <div class="reference-content">
+          <div class="reference-item">
+            <strong>Pot Odds:</strong> (Bet / (Pot + 2 × Bet)) × 100
+            <br>
+            <small>The price you're getting to call</small>
+          </div>
+          <div class="reference-item">
+            <strong>MDF:</strong> (1 - (Bet / (Pot + Bet))) × 100
+            <br>
+            <small>Minimum % of range to defend vs this sizing</small>
+          </div>
+          <div class="reference-item">
+            <strong>Common Sizings:</strong>
+            <ul>
+              <li>33% pot → 75% MDF, 20% pot odds</li>
+              <li>50% pot → 67% MDF, 25% pot odds</li>
+              <li>75% pot → 57% MDF, 30% pot odds</li>
+              <li>100% pot → 50% MDF, 33% pot odds</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Practice your pot odds and MDF calculations for Omaha PLO</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
