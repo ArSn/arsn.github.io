@@ -6,8 +6,7 @@
 const { calculatePotOdds, calculateMDF, calculateBetAmount } = require('./calculator');
 
 // Standard bet sizings for PLO
-const STANDARD_BET_SIZES = [33, 50, 75, 100];
-const OCCASIONAL_BET_SIZES = [20, 66]; // Less common but still used
+const STANDARD_BET_SIZES = [20, 33, 50, 66, 75, 80, 100];
 
 // Pot size ranges (in big blinds or currency units)
 const MIN_POT = 2.5;  // Limp scenario: SB limps, BB checks (1 + 0.5 + 1)
@@ -31,18 +30,14 @@ function generateRandomPot(min = TYPICAL_MIN_POT, max = MAX_POT) {
 /**
  * Generate a random bet sizing
  *
- * @param {boolean} includeOccasional - Include less common bet sizes (20%, 66%)
  * @returns {number} Bet size percentage
  */
-function generateRandomBetSize(includeOccasional = true) {
-  const sizes = includeOccasional
-    ? [...STANDARD_BET_SIZES, ...OCCASIONAL_BET_SIZES]
-    : STANDARD_BET_SIZES;
+function generateRandomBetSize() {
+  const sizes = STANDARD_BET_SIZES;
 
-  // Weight standard sizes more heavily
-  const weights = includeOccasional
-    ? [3, 4, 4, 3, 1, 1] // 33%, 50%, 75%, 100% are more common
-    : [3, 4, 4, 3];
+  // Weight standard sizes: 20, 33, 50, 66, 75, 80, 100
+  // 33%, 50%, 75%, 100% are more common
+  const weights = [1, 3, 4, 1, 4, 1, 3];
 
   const totalWeight = weights.reduce((a, b) => a + b, 0);
   let random = Math.random() * totalWeight;
@@ -67,12 +62,11 @@ function generatePotOddsQuestion(options = {}) {
   const {
     minPot = TYPICAL_MIN_POT,
     maxPot = MAX_POT,
-    betSizePercentage = null,
-    includeOccasionalSizes = true
+    betSizePercentage = null
   } = options;
 
   const pot = generateRandomPot(minPot, maxPot);
-  const betSize = betSizePercentage || generateRandomBetSize(includeOccasionalSizes);
+  const betSize = betSizePercentage || generateRandomBetSize();
   const bet = calculateBetAmount(pot, betSize);
 
   const answer = calculatePotOdds(pot, bet);
@@ -97,12 +91,11 @@ function generateMDFQuestion(options = {}) {
   const {
     minPot = TYPICAL_MIN_POT,
     maxPot = MAX_POT,
-    betSizePercentage = null,
-    includeOccasionalSizes = true
+    betSizePercentage = null
   } = options;
 
   const pot = generateRandomPot(minPot, maxPot);
-  const betSize = betSizePercentage || generateRandomBetSize(includeOccasionalSizes);
+  const betSize = betSizePercentage || generateRandomBetSize();
   const bet = calculateBetAmount(pot, betSize);
 
   const answer = calculateMDF(pot, bet);
@@ -151,7 +144,6 @@ module.exports = {
   generateRandomQuestion,
   checkAnswer,
   STANDARD_BET_SIZES,
-  OCCASIONAL_BET_SIZES,
   MIN_POT,
   MAX_POT,
   TYPICAL_MIN_POT
